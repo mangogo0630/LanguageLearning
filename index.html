@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>紫心韓語測驗</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .analysis-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .analysis-container.show {
+            max-height: 500px;
+        }
+
+        .btn-option {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .btn-option:hover:not([disabled]) {
+            background-color: #f8f9fa;
+            border-color: #0d6efd;
+        }
+
+        .btn-option.selected {
+            background-color: #e7f1ff;
+            border-color: #0d6efd;
+        }
+
+        .btn-option.correct {
+            background-color: #d1e7dd !important;
+            border-color: #198754 !important;
+            color: #0f5132 !important;
+        }
+
+        .btn-option.wrong {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #842029 !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tv-schedule, .menu-price {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .tv-time {
+            width: 100px;
+            color: #495057;
+            font-weight: bold;
+        }
+        
+        .menu-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .menu-price {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <!-- 頁面標題 -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 mb-3">TOPIK I 紫心韓語測驗</h1>
+            <p id="exam-motivation" class="text-muted">為了去韓國努力吧!(๑•̀ㅂ•́)و✧ </p>
+        </div>
+
+        <!-- 題目區域 -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div id="questionsContainer" class="mb-2">
+                    <!-- 題目會動態插入這裡 -->
+                </div>
+            </div>
+            <div class="text-center mb-2">
+                <p id="exam-instruction" class="text-muted">完成作答後點擊下方按鈕查看解析</p>
+            </div>
+        </div>
+
+
+
+        <!-- 固定底部 -->
+        <div class="fixed-bottom bg-white shadow-lg ">
+            <div class="container">
+                <div class="row align-items-center py-3">
+                    <div class="col">
+                        <div class="progress" style="height: 20px;">
+                            <div id="progressBar" 
+                                 class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" 
+                                 style="width: 0%">
+                                <span id="progressText">0/0 題</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button id="showAnalysisBtn" 
+                                class="btn btn-success d-none me-2">
+                            顯示解析
+                        </button>
+                        <button id="resetBtn" 
+                                class="btn btn-secondary d-none">
+                            重新測驗
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const questions = [            
+            {
+                id: 31,
+                question: "신생님은 한국 사람입니다. 저는 프랑스 사람입니다.",
+                options: ["가족", "나라", "생일", "친구"],
+                correct: 1,
+                translation: {
+                    question: "老師是韓國人。我是法國人。",
+                    options: ["家族", "國家", "生日", "朋友"],
+                    explanation: "從句意可知在討論不同「國家」的人，所以選擇「나라」(國家)。"
+                }
+            },
+            {
+                id: 32,
+                question: "8월에는 수업이 없습니다. 학교에 가지 않습니다.",
+                options: ["날짜", "방학", "여행", "약속"],
+                correct: 1,
+                translation: {
+                    question: "8月沒有課。不用去學校。",
+                    options: ["日期", "放假", "旅行", "約定"],
+                    explanation: "從「沒有課」和「不去學校」可以推斷是放假期間，選擇「방학」(放假)。"
+                }
+            },
+            {
+                id: 33,
+                question: "동생은 눈이 큽니다. 코는 작습니다.",
+                options: ["누나", "취미", "장소", "얼굴"],
+                correct: 3,
+                translation: {
+                    question: "弟弟的眼睛大。鼻子小。",
+                    options: ["姐姐", "興趣", "場所", "臉"],
+                    explanation: "題目描述眼睛和鼻子的特徵，這是在描述「얼굴」(臉)的部分。"
+                }
+            },
+            {
+                id: 34,
+                question: "이 사람은 회사원입니다. 학생( )아닙니다.",
+                options: ["이", "의", "을", "파"],
+                correct: 0,
+                translation: {
+                    question: "這個人是上班族。不是學生。",
+                    options: ["是", "的", "要", "派"],
+                    explanation: "在否定句中，需要用「이」來連接名詞和否定詞。"
+                }
+            },
+            {
+                id: 35,
+                question: "( )을 안 가지고 왔습니다. 지금 돈이 없습니다.",
+                options: ["안경", "사전", "우산", "지갑"],
+                correct: 3,
+                translation: {
+                    question: "沒帶（ ）來。現在沒有錢。",
+                    options: ["眼鏡", "字典", "雨傘", "錢包"],
+                    explanation: "從「現在沒有錢」可以推斷，沒帶的是「지갑」(錢包)。"
+                }
+            },
+            {
+                id: 36,
+                question: "교실에 학생이 없습니다. 그래서 ( ).",
+                options: ["예쁩니다", "착합니다", "조용합니다", "가깝습니다"],
+                correct: 2,
+                translation: {
+                    question: "教室裡沒有學生。所以（ ）。",
+                    options: ["漂亮", "善良", "安靜", "接近"],
+                    explanation: "教室沒有學生的結果是「조용합니다」(安靜)。"
+                }
+            },
+            {
+                id: 37,
+                question: "우리는 ( ) 만났습니다. 인사를 했습니다.",
+                options: ["아마", "처음", "아직", "별로"],
+                correct: 1,
+                translation: {
+                    question: "我們（ ）見面。打了招呼。",
+                    options: ["可能", "第一次", "還", "不太"],
+                    explanation: "從打招呼的情境可以推斷是「처음」(第一次)見面。"
+                }
+            },
+            {
+                id: 38,
+                question: "학교 앞에서 약속이 있습니다. 그래서 친구를 ( ).",
+                options: ["기다립니다", "도와줍니다", "좋아합니다", "가르칩니다"],
+                correct: 0,
+                translation: {
+                    question: "在學校前面有約。所以（ ）朋友。",
+                    options: ["等待", "幫助", "喜歡", "教導"],
+                    explanation: "有約在學校前面，所以是在「기다립니다」(等待)朋友。"
+                }
+            },
+            {
+                id: 39,
+                question: "이 그림이 마음에 ( ). 이것을 사고 싶습니다.",
+                options: ["듭니다", "남니다", "옵니다", "잡니다"],
+                correct: 0,
+                translation: {
+                    question: "這幅畫我很喜歡。想買這個。",
+                    options: ["合意", "剩下", "來", "抓住"],
+                    explanation: "「마음에 들다」是固定搭配，表示喜歡/合意，所以選擇「듭니다」。"
+                }
+            }
+            ,
+            {
+            id: 41,
+            type: "table",
+            question: `
+                <div class="tv-schedule mb-4">
+                    <h5 class="text-center mb-3">KBC TV 프로그램</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="tv-time">19시</td>
+                            <td>드라마 '우리 집 사람들'</td>
+                        </tr>
+                        <tr>
+                            <td class="tv-time">20시</td>
+                            <td>KBC 뉴스</td>
+                        </tr>
+                        <tr>
+                            <td class="tv-time">21시</td>
+                            <td>영화 '여름 기차'</td>
+                        </tr>
+                    </table>
+                </div>
+            `,
+            options: [
+                "영화는 뉴스 전에 합니다.",
+                "드라마는 한 시간 정도 합니다.",
+                "뉴스는 저녁 여덟 시에 시작합니다.",
+                "판월 첫 일 발에 영화를 볼 수 있습니다."
+            ],
+            correct: 2,
+            translation: {
+                question: "KBC電視節目表",
+                options: [
+                    "電影在新聞之前播出",
+                    "戲劇大約播放一小時",
+                    "新聞在晚上8點開始",
+                    "可以在月初看到電影"
+                ],
+                explanation: "根據節目表，新聞確實在晚上8點(20時)開始播出。"
+            }
+        },
+        {
+            id: 42,
+            type: "menu",
+            question: `
+                <div class="menu-price mb-4">
+                    <h5 class="text-center mb-4">행복식당이 문을 열었습니다</h5>
+                    <div class="text-center mb-3">7월 1일부터 7월 31일까지 선물을 드립니다.</div>
+                    <div class="menu-items px-4">
+                        <div class="menu-item d-flex justify-content-between">
+                            <span>갈비탕</span>
+                            <span>7,000원</span>
+                        </div>
+                        <div class="menu-item d-flex justify-content-between">
+                            <span>비빔밥</span>
+                            <span>6,000원</span>
+                        </div>
+                        <div class="menu-item d-flex justify-content-between">
+                            <span>냉면</span>
+                            <span>5,500원</span>
+                        </div>
+                    </div>
+                    <div class="small text-muted mt-3">
+                        * 12시 전에는 모든 메뉴가 5,000원입니다.<br>
+                        * 일요일은 쉽니다.
+                    </div>
+                </div>
+            `,
+            options: [
+                "한 달 동안 선물을 받을 수 있습니다.",
+                "일요일에는 식당이 문을 열지 않습니다.",
+                "오후에는 갈비탕과 비빔밥의 값이 같습니다.",
+                "오전에는 냉면을 오천 원에 먹을 수 있습니다."
+            ],
+            correct: 3,
+            translation: {
+                question: "幸福餐廳開業了\n7月1日至7月31日贈送禮物",
+                options: [
+                    "可以收到一個月的禮物",
+                    "星期日餐廳不營業",
+                    "下午的排骨湯和拌飯價格相同",
+                    "上午可以用5000韓元吃冷麵"
+                ],
+                explanation: "根據菜單說明，中午12點前所有餐點都是5000韓元，所以上午確實可以用5000韓元吃冷麵。"
+            }
+        }
+        ];
+
+
+        let userAnswers = new Array(questions.length).fill(null);
+        let analysisShown = false;
+
+        function createQuestionElement(question, index) {
+            const div = document.createElement('div');
+            div.className = 'card mb-4 shadow-sm';
+            div.innerHTML = `
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="card-subtitle text-muted">第 ${index + 1} 題</h6>
+                        <span class="badge analysis-status d-none"></span>
+                    </div>
+                    <h5 class="card-title mb-4">${question.question}</h5>
+                    
+                    <div class="row g-3 mb-4">
+                        ${question.options.map((option, optionIndex) => `
+    <div class="col-6">
+        <button 
+            onclick="selectAnswer(${index}, ${optionIndex})"
+            class="btn btn-option w-100 text-start"
+            data-question="${index}"
+            data-option="${optionIndex}"
+        >
+            <span class="korean-text">${option}</span>
+            <span class="translation-text d-none text-muted">
+                (${question.translation.options[optionIndex]})
+            </span>
+        </button>
+    </div>
+`).join('')}
+                    </div>
+
+                    <div class="analysis-container">
+                        <div class="card bg-light border-0">
+                            <div class="card-body">
+                                <p class="text-muted mb-3">${question.translation.question}</p>
+                                <div class="result-message mb-3"></div>
+                                <div class="alert alert-info mb-0">
+                                    <h6 class="alert-heading">解析：</h6>
+                                    <p class="mb-0">${question.translation.explanation}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            return div;
+        }
+
+        function selectAnswer(questionIndex, optionIndex) {
+            if (analysisShown) return;
+
+            userAnswers[questionIndex] = optionIndex;
+            updateUI();
+
+            // 更新選中狀態
+            const buttons = document.querySelectorAll(`[data-question="${questionIndex}"]`);
+            buttons.forEach((button, index) => {
+                button.classList.toggle('selected', index === optionIndex);
+            });
+        }
+        function showAnalysis() {
+    analysisShown = true;
+    document.getElementById('showAnalysisBtn').classList.add('d-none');
+    document.getElementById('resetBtn').classList.remove('d-none');
+    document.getElementById("exam-motivation").textContent = "看完就可以去寫哥哥後台或畫畫!!٩(๑•̀ω•́๑)۶!";
+    document.getElementById("exam-instruction").textContent = "紫心很棒，記得要早睡覺(*´▽`*)";
+
+
+
+    questions.forEach((question, index) => {
+        const userAnswer = userAnswers[index];
+        const isCorrect = userAnswer === question.correct;
+        
+        // 更新選項樣式並顯示翻譯
+        const buttons = document.querySelectorAll(`[data-question="${index}"]`);
+        buttons.forEach((button, buttonIndex) => {
+            // 顯示翻譯文字
+            const translationText = button.querySelector('.translation-text');
+            translationText.classList.remove('d-none');
+            
+            button.disabled = true;
+            button.classList.remove('selected');
+            if (buttonIndex === question.correct) {
+                button.classList.add('correct');
+            } else if (buttonIndex === userAnswer && !isCorrect) {
+                button.classList.add('wrong');
+            }
+        });
+
+                // 顯示解析
+                const questionCard = buttons[0].closest('.card');
+                const analysisContainer = questionCard.querySelector('.analysis-container');
+                const resultMessage = questionCard.querySelector('.result-message');
+                const statusBadge = questionCard.querySelector('.analysis-status');
+
+                resultMessage.innerHTML = isCorrect 
+                    ? '<div class="alert alert-success">✓ 答對了！</div>'
+                    : `<div class="alert alert-danger">✗ 答錯了！正確答案是：${question.options[question.correct]} (${question.translation.options[question.correct]})</div>`;
+
+                statusBadge.innerHTML = isCorrect 
+                    ? '正確' : '錯誤';
+                statusBadge.classList.remove('d-none');
+                statusBadge.classList.add(isCorrect ? 'bg-success' : 'bg-danger');
+
+                analysisContainer.classList.add('show', 'fade-in');
+            });
+        }
+
+        function resetQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            analysisShown = false;
+            document.getElementById('showAnalysisBtn').classList.add('d-none');
+            document.getElementById('resetBtn').classList.add('d-none');
+            initializeQuiz();
+        }
+
+        function updateUI() {
+            const answeredCount = userAnswers.filter(answer => answer !== null).length;
+            const percentage = (answeredCount / questions.length) * 100;
+            
+            // 更新進度條
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = `${percentage}%`;
+            document.getElementById('progressText').textContent = `${answeredCount}/${questions.length} 題`;
+            
+            if (answeredCount === questions.length) {
+                document.getElementById('showAnalysisBtn').classList.remove('d-none');
+            }
+        }
+
+        function initializeQuiz() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questions.forEach((question, index) => {
+                container.appendChild(createQuestionElement(question, index));
+            });
+
+            document.getElementById('showAnalysisBtn').onclick = showAnalysis;
+            document.getElementById('resetBtn').onclick = resetQuiz;
+            updateUI();
+        }
+
+        // 初始化頁面
+        initializeQuiz();
+    </script>
+</body>
+</html>
