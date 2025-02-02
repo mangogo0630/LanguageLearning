@@ -80,14 +80,9 @@
 <body class="bg-light">
     <div class="container py-5">
         <!-- 頁面標題 -->
-            <div class="text-center mb-5">
-                <h1 class="display-5 mb-3">TOPIK I 紫心韓語測驗</h1>
-                <p id="exam-motivation" class="text-muted">
-                    今天要早睡! (๑•̀ㅂ•́)و✧
-                    <a href="/2_1_index.html">複習昨天的</a>
-                </p>
-            </div>
-            
+        <div class="text-center mb-5">
+            <h1 class="display-5 mb-3">TOPIK I 紫心韓語測驗</h1>
+            <p id="exam-motivation" class="text-muted">為了去韓國努力吧!(๑•̀ㅂ•́)و✧ </p>
         </div>
 
         <!-- 題目區域 -->
@@ -137,108 +132,193 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-const questions = [
-    {
-        id: 1,
-        question: "형용 자가워 ( ) 마음은 따뜻하다.", 
-        options: ["보어도", "보여야", "보이다가", "보이든지"],
-        correct: 0,
-        translation: {
-            question: "兄長（ ）外表冷漠，但內心是溫暖的",
-            options: ["雖然看起來", "必須看起來", "看起來", "無論看起來"],
-            explanation: "此處需要表達反差，所以使用「보어도」(雖然看)"
+        const questions = [            
+            {
+                id: 31,
+                question: "신생님은 한국 사람입니다. 저는 프랑스 사람입니다.",
+                options: ["가족", "나라", "생일", "친구"],
+                correct: 1,
+                translation: {
+                    question: "老師是韓國人。我是法國人。",
+                    options: ["家族", "國家", "生日", "朋友"],
+                    explanation: "從句意可知在討論不同「國家」的人，所以選擇「나라」(國家)。"
+                }
+            },
+            {
+                id: 32,
+                question: "8월에는 수업이 없습니다. 학교에 가지 않습니다.",
+                options: ["날짜", "방학", "여행", "약속"],
+                correct: 1,
+                translation: {
+                    question: "8月沒有課。不用去學校。",
+                    options: ["日期", "放假", "旅行", "約定"],
+                    explanation: "從「沒有課」和「不去學校」可以推斷是放假期間，選擇「방학」(放假)。"
+                }
+            },
+            {
+                id: 33,
+                question: "동생은 눈이 큽니다. 코는 작습니다.",
+                options: ["누나", "취미", "장소", "얼굴"],
+                correct: 3,
+                translation: {
+                    question: "弟弟的眼睛大。鼻子小。",
+                    options: ["姐姐", "興趣", "場所", "臉"],
+                    explanation: "題目描述眼睛和鼻子的特徵，這是在描述「얼굴」(臉)的部分。"
+                }
+            },
+            {
+                id: 34,
+                question: "이 사람은 회사원입니다. 학생( )아닙니다.",
+                options: ["이", "의", "을", "파"],
+                correct: 0,
+                translation: {
+                    question: "這個人是上班族。不是學生。",
+                    options: ["是", "的", "要", "派"],
+                    explanation: "在否定句中，需要用「이」來連接名詞和否定詞。"
+                }
+            },
+            {
+                id: 35,
+                question: "( )을 안 가지고 왔습니다. 지금 돈이 없습니다.",
+                options: ["안경", "사전", "우산", "지갑"],
+                correct: 3,
+                translation: {
+                    question: "沒帶（ ）來。現在沒有錢。",
+                    options: ["眼鏡", "字典", "雨傘", "錢包"],
+                    explanation: "從「現在沒有錢」可以推斷，沒帶的是「지갑」(錢包)。"
+                }
+            },
+            {
+                id: 36,
+                question: "교실에 학생이 없습니다. 그래서 ( ).",
+                options: ["예쁩니다", "착합니다", "조용합니다", "가깝습니다"],
+                correct: 2,
+                translation: {
+                    question: "教室裡沒有學生。所以（ ）。",
+                    options: ["漂亮", "善良", "安靜", "接近"],
+                    explanation: "教室沒有學生的結果是「조용합니다」(安靜)。"
+                }
+            },
+            {
+                id: 37,
+                question: "우리는 ( ) 만났습니다. 인사를 했습니다.",
+                options: ["아마", "처음", "아직", "별로"],
+                correct: 1,
+                translation: {
+                    question: "我們（ ）見面。打了招呼。",
+                    options: ["可能", "第一次", "還", "不太"],
+                    explanation: "從打招呼的情境可以推斷是「처음」(第一次)見面。"
+                }
+            },
+            {
+                id: 38,
+                question: "학교 앞에서 약속이 있습니다. 그래서 친구를 ( ).",
+                options: ["기다립니다", "도와줍니다", "좋아합니다", "가르칩니다"],
+                correct: 0,
+                translation: {
+                    question: "在學校前面有約。所以（ ）朋友。",
+                    options: ["等待", "幫助", "喜歡", "教導"],
+                    explanation: "有約在學校前面，所以是在「기다립니다」(等待)朋友。"
+                }
+            },
+            {
+                id: 39,
+                question: "이 그림이 마음에 ( ). 이것을 사고 싶습니다.",
+                options: ["듭니다", "남니다", "옵니다", "잡니다"],
+                correct: 0,
+                translation: {
+                    question: "這幅畫我很喜歡。想買這個。",
+                    options: ["合意", "剩下", "來", "抓住"],
+                    explanation: "「마음에 들다」是固定搭配，表示喜歡/合意，所以選擇「듭니다」。"
+                }
+            }
+            ,
+            {
+            id: 41,
+            type: "table",
+            question: `
+                <div class="tv-schedule mb-4">
+                    <h5 class="text-center mb-3">KBC TV 프로그램</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="tv-time">19시</td>
+                            <td>드라마 '우리 집 사람들'</td>
+                        </tr>
+                        <tr>
+                            <td class="tv-time">20시</td>
+                            <td>KBC 뉴스</td>
+                        </tr>
+                        <tr>
+                            <td class="tv-time">21시</td>
+                            <td>영화 '여름 기차'</td>
+                        </tr>
+                    </table>
+                </div>
+            `,
+            options: [
+                "영화는 뉴스 전에 합니다.",
+                "드라마는 한 시간 정도 합니다.",
+                "뉴스는 저녁 여덟 시에 시작합니다.",
+                "판월 첫 일 발에 영화를 볼 수 있습니다."
+            ],
+            correct: 2,
+            translation: {
+                question: "KBC電視節目表",
+                options: [
+                    "電影在新聞之前播出",
+                    "戲劇大約播放一小時",
+                    "新聞在晚上8點開始",
+                    "可以在月初看到電影"
+                ],
+                explanation: "根據節目表，新聞確實在晚上8點(20時)開始播出。"
+            }
+        },
+        {
+            id: 42,
+            type: "menu",
+            question: `
+                <div class="menu-price mb-4">
+                    <h5 class="text-center mb-4">행복식당이 문을 열었습니다</h5>
+                    <div class="text-center mb-3">7월 1일부터 7월 31일까지 선물을 드립니다.</div>
+                    <div class="menu-items px-4">
+                        <div class="menu-item d-flex justify-content-between">
+                            <span>갈비탕</span>
+                            <span>7,000원</span>
+                        </div>
+                        <div class="menu-item d-flex justify-content-between">
+                            <span>비빔밥</span>
+                            <span>6,000원</span>
+                        </div>
+                        <div class="menu-item d-flex justify-content-between">
+                            <span>냉면</span>
+                            <span>5,500원</span>
+                        </div>
+                    </div>
+                    <div class="small text-muted mt-3">
+                        * 12시 전에는 모든 메뉴가 5,000원입니다.<br>
+                        * 일요일은 쉽니다.
+                    </div>
+                </div>
+            `,
+            options: [
+                "한 달 동안 선물을 받을 수 있습니다.",
+                "일요일에는 식당이 문을 열지 않습니다.",
+                "오후에는 갈비탕과 비빔밥의 값이 같습니다.",
+                "오전에는 냉면을 오천 원에 먹을 수 있습니다."
+            ],
+            correct: 3,
+            translation: {
+                question: "幸福餐廳開業了\n7月1日至7月31日贈送禮物",
+                options: [
+                    "可以收到一個月的禮物",
+                    "星期日餐廳不營業",
+                    "下午的排骨湯和拌飯價格相同",
+                    "上午可以用5000韓元吃冷麵"
+                ],
+                explanation: "根據菜單說明，中午12點前所有餐點都是5000韓元，所以上午確實可以用5000韓元吃冷麵。"
+            }
         }
-    },
-    {
-        id: 2,
-        question: "길에 ( ) 비가 내리기 시작했다.",
-        options: ["도착하거나", "도착하니까", "도착하거든", "도착하려고"],
-        correct: 1,
-        translation: {
-            question: "在路上（ ）開始下雨了",
-            options: ["到達或", "因為到達", "當到達時", "要到達"],
-            explanation: "表示原因，所以使用「도착하니까」(因為到達)"
-        }
-    },
-    {
-        id: 3,
-        question: "아기가 자고 있어서 계시 않게 조용히 방 안으로 들어갔다.",
-        options: ["게지 않는지", "게지 않도록", "게지 않더니", "게지 않는다"],
-        correct: 1,
-        translation: {
-            question: "因為嬰兒在睡覺，所以安靜地進入房間",
-            options: ["是否不會", "為了不會", "雖然不會", "不會"],
-            explanation: "表示目的，使用「도록」形式"
-        }
-    }
-    ,
-    {
-   id: 4,
-   question: "한국어 실력을 늘리고자 한국 신문과 방송을 자주 봤다.",
-   options: ["늘리기 위해서", "늘리기 무섭게", "늘리는 데신에", "늘리는 반면에"],
-   correct: 0,
-   translation: {
-       question: "為了提升韓語能力而經常看韓國報紙和廣播。",
-       options: ["為了提升", "一提升就", "代替提升", "反而提升"],
-       explanation: "表示目的，使用「-기 위해서」結構"
-   }
-},
-{
-   id: 5,
-   question: "시원한 바람을 만나다\n맑고 깨끗한 자연 느낌 그대로!",
-   options: ["청소기", "선풍기", "세탁기", "전화기"],
-   correct: 1,
-   translation: {
-       question: "遇見清爽的風\n乾淨清新的自然感覺就這樣！",
-       options: ["吸塵器", "電風扇", "洗衣機", "電話"],
-       explanation: "從「清爽的風」可以推斷是在描述電風扇的廣告"
-   }
-},
-{
-   id: 6,
-   question: "안정된 내일을 위하여!\n고객님의 지갑을 소중히 생각하겠습니다.",
-   options: ["병원", "은행", "가게", "학원"],
-   correct: 1,
-   translation: {
-       question: "為了安穩的明天！\n會好好珍惜顧客的錢包。",
-       options: ["醫院", "銀行", "商店", "補習班"],
-       explanation: "提到「錢包」和「安穩的明天」，明顯是銀行的廣告用語"
-   }
-},
-{
-   id: 7,
-   question: "\"엄마, 잘 다녀왔습니다.\" 참 바쁜 한마디!\n우리 아이 학교 다니는 길을 지켜 주세요.",
-   options: ["교통 안전", "전기 절약", "예절 교육", "환경 보호"],
-   correct: 0,
-   translation: {
-       question: "「媽媽，我回來了。」多麼忙碌的一句話！\n請守護我們孩子上學的路。",
-       options: ["交通安全", "節約用電", "禮儀教育", "環境保護"],
-       explanation: "從「守護上學的路」可以判斷是關於交通安全的宣導"
-   }
-},
-{
-   id: 8,
-   question: "세계로! 미래로!\n대한자동차와 함께 성장해 나갈 여러분을 기다립니다.",
-   options: ["사업 모집", "여행 소개", "제품 설명", "판매 안내"],
-   correct: 0,
-   translation: {
-       question: "走向世界！走向未來！\n等待著與大韓汽車一起成長的各位。",
-       options: ["事業招募", "旅遊介紹", "產品說明", "銷售指南"],
-       explanation: "從「一起成長」和「等待著」的表述，這是一則招募廣告"
-   }
-},
-{
-   id: 9,
-   question: "2015 청소년 과학 동아리 지원 사업\n인주시가 여러분의 꿈과 희망을 응원합니다.\n\n● 신청 대상: 중·고등학생 5명 이상의 동아리\n※ 교사 1명이 포함되어야 함\n● 지원 금액: 최대 200만 원\n● 사업 기간: 2015년 7월 1일~12월 31일",
-   options: ["동아리 지원은 일 년 동안 계속된다.", "동아리는 고등학생들로만 구성되어야 한다.", "동아리 활동비는 이백만 원까지 받을 수 있다.", "동아리 인원이 두세 명인 경우에도 신청할 수 있다."],
-   correct: 2,
-   translation: {
-       question: "2015青少年科學社團支援事業\n仁州市支持大家的夢想和希望。\n\n● 申請對象：5名以上中高中生社團\n※ 須包含1名教師\n● 支援金額：最高200萬韓元\n● 事業期間：2015年7月1日至12月31日",
-       options: ["社團支援持續一年", "社團必須只由高中生組成", "社團活動費可以收到200萬韓元", "2-3人的社團也可以申請"],
-       explanation: "根據支援金額說明「최대 200만 원」(最高200萬韓元)，選項3正確"
-   }
-}
-];
+        ];
 
 
         let userAnswers = new Array(questions.length).fill(null);
@@ -306,7 +386,7 @@ const questions = [
     analysisShown = true;
     document.getElementById('showAnalysisBtn').classList.add('d-none');
     document.getElementById('resetBtn').classList.remove('d-none');
-    document.getElementById("exam-motivation").textContent = "第二天完成!!恭喜!٩(๑•̀ω•́๑)۶!";
+    document.getElementById("exam-motivation").textContent = "看完就可以去寫哥哥後台或畫畫!!٩(๑•̀ω•́๑)۶!";
     document.getElementById("exam-instruction").textContent = "紫心很棒，記得要早睡覺(*´▽`*)";
 
 
