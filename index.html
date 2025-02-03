@@ -125,7 +125,7 @@ const questions = [{
   id: 1,
   audioUrl: `./music/01.mp3`,
   options: ["네, 사람이에요", "네, 사람이 많아요", "아니요, 사람이 좋아요", "아니요, 사람이 있어요"],
-  correct: 0,
+  correct: 1,
   translation: {
       script: { korean: "여자: 사람이 많아요?\n남자: _________________", chinese: "女：有很多人嗎？\n男：_________________" },
       options: ["是的，有人", "是的，人很多", "不，人很好", "不，有人"]
@@ -134,7 +134,7 @@ const questions = [{
   id: 2,
   audioUrl: `./music/02.mp3`, 
   options: ["네, 노래가 있어요", "네, 노래를 알아요", "아니요, 노래를 못해요", "아니요, 노래가 아니에요"],
-  correct: 3,
+  correct: 2,
   translation: {
       script: { korean: "남자: 노래를 잘해요?\n여자: _________________", chinese: "男：唱歌很棒嗎？\n女：_________________" },
       options: ["是的，有歌", "是的，知道歌", "不，不會唱歌", "不，不是歌"]
@@ -143,7 +143,7 @@ const questions = [{
   id: 3,
   audioUrl: `./music/03.mp3`,
   options: ["목요일에 봐요", "친구를 만나요", "학교에서 봐요", "두 시에 만나요"],
-  correct: 4,
+  correct: 3,
   translation: {
       script: { korean: "남자: 오늘 몇 시에 만나요?\n여자: _________________", chinese: "男：今天幾點見面呢？\n女：_________________" },
       options: ["週四見", "見朋友", "在學校見", "兩點見"]
@@ -152,7 +152,7 @@ const questions = [{
   id: 4, 
   audioUrl: `./music/04.mp3`,
   options: ["학교에 가요", "지금 없어요", "수업이 있어요", "아주 재미있어요"],
-  correct: 4,
+  correct: 3,
   translation: {
       script: { korean: "남자: 수업이 어때요?\n여자: _________________", chinese: "男：課程怎麼樣？\n女：_________________" },
       options: ["去學校", "現在沒有", "有課", "很有趣"]
@@ -161,7 +161,7 @@ const questions = [{
   id: 5,
   audioUrl: `./music/05.mp3`,  
   options: ["고맙습니다", "괜찮습니다", "죄송합니다", "그렇습니다"],
-  correct: 1,
+  correct: 0,
   translation: {
       script: { korean: "여자: 휴가 잘 다녀오세요\n남자: _________________", chinese: "女：假期愉快\n男：_________________" },
       options: ["謝謝", "沒關係", "對不起", "是的"]
@@ -170,7 +170,7 @@ const questions = [{
 id: 6,
   audioUrl: `./music/06.mp3`,
   options: ["네, 부탁합니다", "네, 알겠습니다", "네, 진화 받으십시오", "네, 다시 걸겠습니다"],
-  correct: 3,
+  correct: 1,
   translation: {
       script: { korean: "남자: (전화 목소리) 수미 씨에게 말씀 좀 전해 주세요.\n여자: _________________" }
   }
@@ -178,7 +178,7 @@ id: 6,
   id: 7,
   audioUrl: `./music/07.mp3`,
   options: ["극장", "시청", "약국", "시장"],
-  correct: 4,
+  correct: 0,
   translation: {
       script: { korean: "남자: 빨리 오세요. 영화가 곧 시작해요.\n여자: 네, 지금 가요." }
   }
@@ -186,7 +186,7 @@ id: 6,
   id: 8, 
   audioUrl: `./music/08.mp3`,
   options: ["웃 가게", "신발 가게", "모자 가게", "안경 가게"],
-  correct: 2,
+  correct: 0,
   translation: {
       script: { korean: "남자: 이 바지 입어 볼 수 있어요?\n여자: 네, 이쪽으로 오세요." }
   }
@@ -194,7 +194,7 @@ id: 6,
   id: 9,
   audioUrl: `./music/09.mp3`,
   options: ["새탁소", "우체국", "미용실", "편의점"],
-  correct: 3,
+  correct: 2,
   translation: {
       script: { korean: "남자: 어떻게 해 드릴까요?\n여자: 짧은 머리로 해 주세요." }
   }
@@ -202,7 +202,7 @@ id: 6,
   id: 10, 
   audioUrl: `./music/10.mp3`,
   options: ["사진관", "도서관", "박물관", "미술관"],
-  correct: 1,
+  correct: 0,
   translation: {
       script: { korean: "여자: 여권 만들 거예요. 잘 찍어 주세요.\n남자: 네, 여기 보세요. 적습니다." }
   }
@@ -210,7 +210,7 @@ id: 6,
   id: 11,
   audioUrl: `./music/11.mp3`,
   options: ["이름", "가족", "직업", "생일"],
-  correct: 1,
+  correct: 0,
   translation: {
       script: { korean: "남자: 안녕하세요? 김준호입니다.\n여자: 반갑습니다. 저는 이지영입니다." }
   }
@@ -218,7 +218,7 @@ id: 6,
   id: 12,
   audioUrl: `./music/12.mp3`,
   options: ["체소", "과원", "과자", "고기"],
-  correct: 2,
+  correct: 1,
   translation: {
       script: { korean: "여자: 수박을 좋아하세요?\n남자: 네, 수박도 좋아하지만 포도가 더 좋아요." }
   }
@@ -226,7 +226,7 @@ id: 6,
   id: 13,
   audioUrl: `./music/13.mp3`,
   options: ["나이", "번호", "날짜", "시간"],
-  correct: 1,
+  correct: 0,
   translation: {
       script: { korean: "남자: 동생은 몇 살이에요?\n여자: 저보다 2살 적어요." }
   }
@@ -234,7 +234,7 @@ id: 6,
   id: 14,
   audioUrl: `./music/14.mp3`,
   options: ["나라", "휴일", "여행", "고향"],
-  correct: 4,
+  correct: 3,
   translation: {
       script: { korean: "남자: 서울에서 대이났어요?\n여자: 아니요, 부산에서요." }
   }
