@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>紫心韓語測驗</title>
-    <!-- Bootstrap CSS -->
+    <title>紫心韓語聽力測驗</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .analysis-container {
@@ -12,316 +11,338 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
-        
         .analysis-container.show {
             max-height: 500px;
         }
-
         .btn-option {
             transition: all 0.3s ease;
             border: 2px solid transparent;
         }
-
         .btn-option:hover:not([disabled]) {
             background-color: #f8f9fa;
             border-color: #0d6efd;
         }
-
         .btn-option.selected {
             background-color: #e7f1ff;
             border-color: #0d6efd;
         }
-
         .btn-option.correct {
             background-color: #d1e7dd !important;
             border-color: #198754 !important;
             color: #0f5132 !important;
         }
-
         .btn-option.wrong {
             background-color: #f8d7da !important;
             border-color: #dc3545 !important;
             color: #842029 !important;
         }
-
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
-
-        .tv-schedule, .menu-price {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .tv-time {
-            width: 100px;
-            color: #495057;
-            font-weight: bold;
-        }
-        
-        .menu-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .menu-price {
-            font-weight: bold;
-            color: #495057;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        .sample-question {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .script-content {
+            color: #6c757d;
         }
     </style>
 </head>
 <body class="bg-light">
     <div class="container py-5">
-        <!-- 頁面標題 -->
-            <div class="text-center mb-5">
-                <h1 class="display-5 mb-3">TOPIK I 紫心韓語測驗</h1>
-                <p id="exam-motivation" class="text-muted">
-                    今天要早睡! (๑•̀ㅂ•́)و✧
-                    <a href="/2_1_index.html">複習昨天的</a>
-                </p>
-            </div>
-            
+        <div class="text-center mb-5">
+            <h1 class="display-5 mb-3">TOPIK I 紫心韓語聽力測驗</h1>
+            <p id="exam-motivation" class="text-muted">好希望你做題目的時候，哥哥可以自己寫好後台喔...(╥﹏╥)</p>
         </div>
 
-        <!-- 題目區域 -->
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div id="questionsContainer" class="mb-2">
-                    <!-- 題目會動態插入這裡 -->
-                </div>
-            </div>
-            <div class="text-center mb-2">
-                <p id="exam-instruction" class="text-muted">完成作答後點擊下方按鈕查看解析</p>
-            </div>
-        </div>
-
-
-
-        <!-- 固定底部 -->
-        <div class="fixed-bottom bg-white shadow-lg ">
-            <div class="container">
-                <div class="row align-items-center py-3">
-                    <div class="col">
-                        <div class="progress" style="height: 20px;">
-                            <div id="progressBar" 
-                                 class="progress-bar progress-bar-striped progress-bar-animated" 
-                                 role="progressbar" 
-                                 style="width: 0%">
-                                <span id="progressText">0/0 題</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <button id="showAnalysisBtn" 
-                                class="btn btn-success d-none me-2">
-                            顯示解析
-                        </button>
-                        <button id="resetBtn" 
-                                class="btn btn-secondary d-none">
-                            重新測驗
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-const questions = [
-    {
-        id: 1,
-        question: "형용 자가워 ( ) 마음은 따뜻하다.", 
-        options: ["보어도", "보여야", "보이다가", "보이든지"],
-        correct: 0,
-        translation: {
-            question: "兄長（ ）外表冷漠，但內心是溫暖的",
-            options: ["雖然看起來", "必須看起來", "看起來", "無論看起來"],
-            explanation: "此處需要表達反差，所以使用「보어도」(雖然看)"
-        }
-    },
-    {
-        id: 2,
-        question: "길에 ( ) 비가 내리기 시작했다.",
-        options: ["도착하거나", "도착하니까", "도착하거든", "도착하려고"],
-        correct: 1,
-        translation: {
-            question: "在路上（ ）開始下雨了",
-            options: ["到達或", "因為到達", "當到達時", "要到達"],
-            explanation: "表示原因，所以使用「도착하니까」(因為到達)"
-        }
-    },
-    {
-        id: 3,
-        question: "아기가 자고 있어서 계시 않게 조용히 방 안으로 들어갔다.",
-        options: ["게지 않는지", "게지 않도록", "게지 않더니", "게지 않는다"],
-        correct: 1,
-        translation: {
-            question: "因為嬰兒在睡覺，所以安靜地進入房間",
-            options: ["是否不會", "為了不會", "雖然不會", "不會"],
-            explanation: "表示目的，使用「도록」形式"
-        }
-    }
-    ,
-    {
-   id: 4,
-   question: "한국어 실력을 늘리고자 한국 신문과 방송을 자주 봤다.",
-   options: ["늘리기 위해서", "늘리기 무섭게", "늘리는 데신에", "늘리는 반면에"],
-   correct: 0,
-   translation: {
-       question: "為了提升韓語能力而經常看韓國報紙和廣播。",
-       options: ["為了提升", "一提升就", "代替提升", "反而提升"],
-       explanation: "表示目的，使用「-기 위해서」結構"
-   }
-},
-{
-   id: 5,
-   question: "시원한 바람을 만나다\n맑고 깨끗한 자연 느낌 그대로!",
-   options: ["청소기", "선풍기", "세탁기", "전화기"],
-   correct: 1,
-   translation: {
-       question: "遇見清爽的風\n乾淨清新的自然感覺就這樣！",
-       options: ["吸塵器", "電風扇", "洗衣機", "電話"],
-       explanation: "從「清爽的風」可以推斷是在描述電風扇的廣告"
-   }
-},
-{
-   id: 6,
-   question: "안정된 내일을 위하여!\n고객님의 지갑을 소중히 생각하겠습니다.",
-   options: ["병원", "은행", "가게", "학원"],
-   correct: 1,
-   translation: {
-       question: "為了安穩的明天！\n會好好珍惜顧客的錢包。",
-       options: ["醫院", "銀行", "商店", "補習班"],
-       explanation: "提到「錢包」和「安穩的明天」，明顯是銀行的廣告用語"
-   }
-},
-{
-   id: 7,
-   question: "\"엄마, 잘 다녀왔습니다.\" 참 바쁜 한마디!\n우리 아이 학교 다니는 길을 지켜 주세요.",
-   options: ["교통 안전", "전기 절약", "예절 교육", "환경 보호"],
-   correct: 0,
-   translation: {
-       question: "「媽媽，我回來了。」多麼忙碌的一句話！\n請守護我們孩子上學的路。",
-       options: ["交通安全", "節約用電", "禮儀教育", "環境保護"],
-       explanation: "從「守護上學的路」可以判斷是關於交通安全的宣導"
-   }
-},
-{
-   id: 8,
-   question: "세계로! 미래로!\n대한자동차와 함께 성장해 나갈 여러분을 기다립니다.",
-   options: ["사업 모집", "여행 소개", "제품 설명", "판매 안내"],
-   correct: 0,
-   translation: {
-       question: "走向世界！走向未來！\n等待著與大韓汽車一起成長的各位。",
-       options: ["事業招募", "旅遊介紹", "產品說明", "銷售指南"],
-       explanation: "從「一起成長」和「等待著」的表述，這是一則招募廣告"
-   }
-},
-{
-   id: 9,
-   question: "2015 청소년 과학 동아리 지원 사업\n인주시가 여러분의 꿈과 희망을 응원합니다.\n\n● 신청 대상: 중·고등학생 5명 이상의 동아리\n※ 교사 1명이 포함되어야 함\n● 지원 금액: 최대 200만 원\n● 사업 기간: 2015년 7월 1일~12월 31일",
-   options: ["동아리 지원은 일 년 동안 계속된다.", "동아리는 고등학생들로만 구성되어야 한다.", "동아리 활동비는 이백만 원까지 받을 수 있다.", "동아리 인원이 두세 명인 경우에도 신청할 수 있다."],
-   correct: 2,
-   translation: {
-       question: "2015青少年科學社團支援事業\n仁州市支持大家的夢想和希望。\n\n● 申請對象：5名以上中高中生社團\n※ 須包含1名教師\n● 支援金額：最高200萬韓元\n● 事業期間：2015年7月1日至12月31日",
-       options: ["社團支援持續一年", "社團必須只由高中生組成", "社團活動費可以收到200萬韓元", "2-3人的社團也可以申請"],
-       explanation: "根據支援金額說明「최대 200만 원」(最高200萬韓元)，選項3正確"
-   }
-}
-];
-
-
-        let userAnswers = new Array(questions.length).fill(null);
-        let analysisShown = false;
-
-        function createQuestionElement(question, index) {
-            const div = document.createElement('div');
-            div.className = 'card mb-4 shadow-sm';
-            div.innerHTML = `
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="card-subtitle text-muted">第 ${index + 1} 題</h6>
-                        <span class="badge analysis-status d-none"></span>
-                    </div>
-                    <h5 class="card-title mb-4">${question.question}</h5>
-                    
-                    <div class="row g-3 mb-4">
-                        ${question.options.map((option, optionIndex) => `
-    <div class="col-6">
-        <button 
-            onclick="selectAnswer(${index}, ${optionIndex})"
-            class="btn btn-option w-100 text-start"
-            data-question="${index}"
-            data-option="${optionIndex}"
-        >
-            <span class="korean-text">${option}</span>
-            <span class="translation-text d-none text-muted">
-                (${question.translation.options[optionIndex]})
-            </span>
-        </button>
-    </div>
-`).join('')}
-                    </div>
-
-                    <div class="analysis-container">
-                        <div class="card bg-light border-0">
-                            <div class="card-body">
-                                <p class="text-muted mb-3">${question.translation.question}</p>
-                                <div class="result-message mb-3"></div>
-                                <div class="alert alert-info mb-0">
-                                    <h6 class="alert-heading">解析：</h6>
-                                    <p class="mb-0">${question.translation.explanation}</p>
+                <!-- 範例題目 -->
+                <div class="sample-question">
+                    <h5 class="mb-4">範例</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text mb-4">
+                                가: 공책이에요?<br>
+                                나: _________________
+                            </p>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="p-3 border rounded">① 네, 공책이에요.</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 border rounded">② 네, 공책이 없어요.</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 border rounded">③ 아니요, 공책이 싸요.</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 border rounded">④ 아니요, 공책이 커요.</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            `;
-            return div;
-        }
 
-        function selectAnswer(questionIndex, optionIndex) {
-            if (analysisShown) return;
+                <!-- 題目容器 -->
+                <div id="questionsContainer" class="mb-2"></div>
+                
+                <div class="text-center mb-2">
+                    <p id="exam-instruction" class="text-muted">請聽音檔並選擇正確答案</p>
+                </div>
+            </div>
+        </div>
 
-            userAnswers[questionIndex] = optionIndex;
-            updateUI();
+        <!-- 底部進度條 -->
+        <div class="fixed-bottom bg-white shadow-lg">
+            <div class="container">
+                <div class="row align-items-center py-3">
+                    <div class="col">
+                        <div class="progress" style="height: 20px;">
+                            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">
+                                <span id="progressText">0/0 題</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button id="showAnalysisBtn" class="btn btn-success d-none me-2">顯示解析</button>
+                        <button id="resetBtn" class="btn btn-secondary d-none">重新測驗</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+const questions = [{
+  id: 1,
+  audioUrl: `./music/01.mp3`,
+  options: ["네, 사람이에요", "네, 사람이 많아요", "아니요, 사람이 좋아요", "아니요, 사람이 있어요"],
+  correct: 0,
+  translation: {
+      script: { korean: "여자: 사람이 많아요?\n남자: _________________", chinese: "女：有很多人嗎？\n男：_________________" },
+      options: ["是的，有人", "是的，人很多", "不，人很好", "不，有人"]
+  }
+}, {
+  id: 2,
+  audioUrl: `./music/02.mp3`, 
+  options: ["네, 노래가 있어요", "네, 노래를 알아요", "아니요, 노래를 못해요", "아니요, 노래가 아니에요"],
+  correct: 3,
+  translation: {
+      script: { korean: "남자: 노래를 잘해요?\n여자: _________________", chinese: "男：唱歌很棒嗎？\n女：_________________" },
+      options: ["是的，有歌", "是的，知道歌", "不，不會唱歌", "不，不是歌"]
+  }
+}, {
+  id: 3,
+  audioUrl: `./music/03.mp3`,
+  options: ["목요일에 봐요", "친구를 만나요", "학교에서 봐요", "두 시에 만나요"],
+  correct: 4,
+  translation: {
+      script: { korean: "남자: 오늘 몇 시에 만나요?\n여자: _________________", chinese: "男：今天幾點見面呢？\n女：_________________" },
+      options: ["週四見", "見朋友", "在學校見", "兩點見"]
+  }
+}, {
+  id: 4, 
+  audioUrl: `./music/04.mp3`,
+  options: ["학교에 가요", "지금 없어요", "수업이 있어요", "아주 재미있어요"],
+  correct: 4,
+  translation: {
+      script: { korean: "남자: 수업이 어때요?\n여자: _________________", chinese: "男：課程怎麼樣？\n女：_________________" },
+      options: ["去學校", "現在沒有", "有課", "很有趣"]
+  }
+}, {
+  id: 5,
+  audioUrl: `./music/05.mp3`,  
+  options: ["고맙습니다", "괜찮습니다", "죄송합니다", "그렇습니다"],
+  correct: 1,
+  translation: {
+      script: { korean: "여자: 휴가 잘 다녀오세요\n남자: _________________", chinese: "女：假期愉快\n男：_________________" },
+      options: ["謝謝", "沒關係", "對不起", "是的"]
+  }
+},{
+id: 6,
+  audioUrl: `./music/06.mp3`,
+  options: ["네, 부탁합니다", "네, 알겠습니다", "네, 진화 받으십시오", "네, 다시 걸겠습니다"],
+  correct: 3,
+  translation: {
+      script: { korean: "남자: (전화 목소리) 수미 씨에게 말씀 좀 전해 주세요.\n여자: _________________" }
+  }
+}, {
+  id: 7,
+  audioUrl: `./music/07.mp3`,
+  options: ["극장", "시청", "약국", "시장"],
+  correct: 4,
+  translation: {
+      script: { korean: "남자: 빨리 오세요. 영화가 곧 시작해요.\n여자: 네, 지금 가요." }
+  }
+}, {
+  id: 8, 
+  audioUrl: `./music/08.mp3`,
+  options: ["웃 가게", "신발 가게", "모자 가게", "안경 가게"],
+  correct: 2,
+  translation: {
+      script: { korean: "남자: 이 바지 입어 볼 수 있어요?\n여자: 네, 이쪽으로 오세요." }
+  }
+}, {
+  id: 9,
+  audioUrl: `./music/09.mp3`,
+  options: ["새탁소", "우체국", "미용실", "편의점"],
+  correct: 3,
+  translation: {
+      script: { korean: "남자: 어떻게 해 드릴까요?\n여자: 짧은 머리로 해 주세요." }
+  }
+}, {
+  id: 10, 
+  audioUrl: `./music/10.mp3`,
+  options: ["사진관", "도서관", "박물관", "미술관"],
+  correct: 1,
+  translation: {
+      script: { korean: "여자: 여권 만들 거예요. 잘 찍어 주세요.\n남자: 네, 여기 보세요. 적습니다." }
+  }
+}, {
+  id: 11,
+  audioUrl: `./music/11.mp3`,
+  options: ["이름", "가족", "직업", "생일"],
+  correct: 1,
+  translation: {
+      script: { korean: "남자: 안녕하세요? 김준호입니다.\n여자: 반갑습니다. 저는 이지영입니다." }
+  }
+}, {
+  id: 12,
+  audioUrl: `./music/12.mp3`,
+  options: ["체소", "과원", "과자", "고기"],
+  correct: 2,
+  translation: {
+      script: { korean: "여자: 수박을 좋아하세요?\n남자: 네, 수박도 좋아하지만 포도가 더 좋아요." }
+  }
+}, {
+  id: 13,
+  audioUrl: `./music/13.mp3`,
+  options: ["나이", "번호", "날짜", "시간"],
+  correct: 1,
+  translation: {
+      script: { korean: "남자: 동생은 몇 살이에요?\n여자: 저보다 2살 적어요." }
+  }
+}, {
+  id: 14,
+  audioUrl: `./music/14.mp3`,
+  options: ["나라", "휴일", "여행", "고향"],
+  correct: 4,
+  translation: {
+      script: { korean: "남자: 서울에서 대이났어요?\n여자: 아니요, 부산에서요." }
+  }
+}, ];
 
-            // 更新選中狀態
-            const buttons = document.querySelectorAll(`[data-question="${questionIndex}"]`);
-            buttons.forEach((button, index) => {
-                button.classList.toggle('selected', index === optionIndex);
-            });
-        }
-        function showAnalysis() {
+let userAnswers = new Array(questions.length).fill(null);
+let analysisShown = false;
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+function setupAudio(index) {
+    const audio = document.getElementById(`audio-${index}`);
+    const timeDisplay = document.getElementById(`time-${index}`);
+    timeDisplay.textContent = formatTime(audio.duration);
+}
+
+function updateProgress(index) {
+    const audio = document.getElementById(`audio-${index}`);
+    const progressBar = document.getElementById(`progress-${index}`);
+    const timeDisplay = document.getElementById(`time-${index}`);
+    const progress = (audio.currentTime / audio.duration) * 100;
+    progressBar.style.width = `${progress}%`;
+    timeDisplay.textContent = formatTime(audio.currentTime);
+}
+
+function toggleAudio(index) {
+    const audio = document.getElementById(`audio-${index}`);
+    const button = document.getElementById(`playBtn-${index}`);
+    
+    if (audio.paused) {
+        audio.play();
+        button.textContent = '暫停';
+    } else {
+        audio.pause();
+        button.textContent = '播放';
+    }
+}
+
+function createQuestionElement(question, index) {
+    const div = document.createElement('div');
+    div.className = 'card mb-4 shadow-sm';
+    div.innerHTML = `
+        <div class="card-body">
+            <div class="d-flex justify-content-start align-items-center gap-3 mb-4">
+                <h6 class="card-subtitle text-muted mb-0">第 ${index + 1} 題</h6>
+                <div class="d-flex align-items-center gap-2">
+                    <button onclick="toggleAudio(${index})" class="btn btn-sm btn-primary" id="playBtn-${index}">播放</button>
+                    <div style="width: 200px">
+                        <div class="progress" style="height: 5px;">
+                            <div id="progress-${index}" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <span id="time-${index}" class="small text-muted">0:00</span>
+                </div>
+                <audio id="audio-${index}" src="${question.audioUrl}" preload="metadata" 
+                    onloadedmetadata="setupAudio(${index})"
+                    ontimeupdate="updateProgress(${index})"></audio>
+                <span class="badge analysis-status d-none ms-auto"></span>
+            </div>
+            <div class="script-content d-none mb-3"></div>
+            <div class="row g-3">
+                ${question.options.map((option, optionIndex) => `
+                    <div class="col-6">
+                        <button 
+                            onclick="selectAnswer(${index}, ${optionIndex})"
+                            class="btn btn-option w-100 text-start"
+                            data-question="${index}"
+                            data-option="${optionIndex}"
+                        >
+                            ${option}
+                        </button>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    return div;
+}
+
+function selectAnswer(questionIndex, optionIndex) {
+    if (analysisShown) return;
+
+    userAnswers[questionIndex] = optionIndex;
+    updateUI();
+
+    const buttons = document.querySelectorAll(`[data-question="${questionIndex}"]`);
+    buttons.forEach((button, index) => {
+        button.classList.toggle('selected', index === optionIndex);
+    });
+}
+
+function showAnalysis() {
     analysisShown = true;
     document.getElementById('showAnalysisBtn').classList.add('d-none');
     document.getElementById('resetBtn').classList.remove('d-none');
-    document.getElementById("exam-motivation").textContent = "第二天完成!!恭喜!٩(๑•̀ω•́๑)۶!";
+    document.getElementById("exam-motivation").textContent = "翻譯太怪ㄌ，這次單純放答案喔";
     document.getElementById("exam-instruction").textContent = "紫心很棒，記得要早睡覺(*´▽`*)";
-
-
 
     questions.forEach((question, index) => {
         const userAnswer = userAnswers[index];
         const isCorrect = userAnswer === question.correct;
         
-        // 更新選項樣式並顯示翻譯
         const buttons = document.querySelectorAll(`[data-question="${index}"]`);
         buttons.forEach((button, buttonIndex) => {
-            // 顯示翻譯文字
-            const translationText = button.querySelector('.translation-text');
-            translationText.classList.remove('d-none');
-            
             button.disabled = true;
             button.classList.remove('selected');
             if (buttonIndex === question.correct) {
@@ -331,62 +352,53 @@ const questions = [
             }
         });
 
-                // 顯示解析
-                const questionCard = buttons[0].closest('.card');
-                const analysisContainer = questionCard.querySelector('.analysis-container');
-                const resultMessage = questionCard.querySelector('.result-message');
-                const statusBadge = questionCard.querySelector('.analysis-status');
+        const questionCard = buttons[0].closest('.card');
+        const statusBadge = questionCard.querySelector('.analysis-status');
+        const scriptContent = questionCard.querySelector('.script-content');
+        
+        scriptContent.classList.remove('d-none');
+        scriptContent.innerHTML = `<p class="mb-0">${question.translation.script.korean}</p>`;
 
-                resultMessage.innerHTML = isCorrect 
-                    ? '<div class="alert alert-success">✓ 答對了！</div>'
-                    : `<div class="alert alert-danger">✗ 答錯了！正確答案是：${question.options[question.correct]} (${question.translation.options[question.correct]})</div>`;
+        statusBadge.innerHTML = isCorrect ? '正確' : '錯誤';
+        statusBadge.classList.remove('d-none');
+        statusBadge.classList.add(isCorrect ? 'bg-success' : 'bg-danger');
+    });
+}
+function resetQuiz() {
+    userAnswers = new Array(questions.length).fill(null);
+    analysisShown = false;
+    document.getElementById('showAnalysisBtn').classList.add('d-none');
+    document.getElementById('resetBtn').classList.add('d-none');
+    initializeQuiz();
+}
 
-                statusBadge.innerHTML = isCorrect 
-                    ? '正確' : '錯誤';
-                statusBadge.classList.remove('d-none');
-                statusBadge.classList.add(isCorrect ? 'bg-success' : 'bg-danger');
+function updateUI() {
+    const answeredCount = userAnswers.filter(answer => answer !== null).length;
+    const percentage = (answeredCount / questions.length) * 100;
+    
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.width = `${percentage}%`;
+    document.getElementById('progressText').textContent = `${answeredCount}/${questions.length} 題`;
+    
+    if (answeredCount === questions.length) {
+        document.getElementById('showAnalysisBtn').classList.remove('d-none');
+    }
+}
 
-                analysisContainer.classList.add('show', 'fade-in');
-            });
-        }
+function initializeQuiz() {
+    const container = document.getElementById('questionsContainer');
+    container.innerHTML = '';
 
-        function resetQuiz() {
-            userAnswers = new Array(questions.length).fill(null);
-            analysisShown = false;
-            document.getElementById('showAnalysisBtn').classList.add('d-none');
-            document.getElementById('resetBtn').classList.add('d-none');
-            initializeQuiz();
-        }
+    questions.forEach((question, index) => {
+        container.appendChild(createQuestionElement(question, index));
+    });
 
-        function updateUI() {
-            const answeredCount = userAnswers.filter(answer => answer !== null).length;
-            const percentage = (answeredCount / questions.length) * 100;
-            
-            // 更新進度條
-            const progressBar = document.getElementById('progressBar');
-            progressBar.style.width = `${percentage}%`;
-            document.getElementById('progressText').textContent = `${answeredCount}/${questions.length} 題`;
-            
-            if (answeredCount === questions.length) {
-                document.getElementById('showAnalysisBtn').classList.remove('d-none');
-            }
-        }
+    document.getElementById('showAnalysisBtn').onclick = showAnalysis;
+    document.getElementById('resetBtn').onclick = resetQuiz;
+    updateUI();
+}
 
-        function initializeQuiz() {
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = '';
-
-            questions.forEach((question, index) => {
-                container.appendChild(createQuestionElement(question, index));
-            });
-
-            document.getElementById('showAnalysisBtn').onclick = showAnalysis;
-            document.getElementById('resetBtn').onclick = resetQuiz;
-            updateUI();
-        }
-
-        // 初始化頁面
-        initializeQuiz();
+initializeQuiz();
     </script>
 </body>
 </html>
